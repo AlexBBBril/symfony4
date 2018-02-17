@@ -3,19 +3,35 @@
 namespace App\Controller;
 
 
+use Http\Client\HttpClient;
+use Http\Message\MessageFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
 class ArticleController extends AbstractController
 {
+
+
     /**
-     * @Route("/")
+     * @Route("/", name="homepage")
+     *
+     * @param HttpClient     $client
+     * @param MessageFactory $messageFactory
+     *
+     * @return Response
+     * @throws \Exception
+     * @throws \Http\Client\Exception
      */
-    public function homepage()
+    public function homepage(HttpClient $client, MessageFactory $messageFactory)
     {
+        $break = true;
+
+        $response = $client->sendRequest($messageFactory->createRequest('GET', 'https://yandex.ru'));
+        $response->getBody()->getContents();
         return new Response('first page');
     }
+
 
     /**
      * @Route("/news/{slug}")
@@ -26,7 +42,7 @@ class ArticleController extends AbstractController
     public function show(String $slug)
     {
         return $this->render('article/show.html.twig', [
-            'title' => ucwords(str_replace('-', ' ', $slug ))
+            'title' => ucwords(str_replace('-', ' ', $slug))
         ]);
     }
 
