@@ -1,9 +1,11 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Created by PhpStorm.
  * User: Home
  * Date: 17.02.2018
- * Time: 20:29
+ * Time: 20:29.
  */
 
 namespace App\Entity;

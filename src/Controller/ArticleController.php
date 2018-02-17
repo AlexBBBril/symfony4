@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Controller;
+declare(strict_types=1);
 
+namespace App\Controller;
 
 use Http\Client\HttpClient;
 use Http\Message\MessageFactory;
@@ -11,8 +12,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ArticleController extends AbstractController
 {
-
-
     /**
      * @Route("/", name="homepage")
      *
@@ -20,6 +19,7 @@ class ArticleController extends AbstractController
      * @param MessageFactory $messageFactory
      *
      * @return Response
+     *
      * @throws \Exception
      * @throws \Http\Client\Exception
      */
@@ -29,22 +29,21 @@ class ArticleController extends AbstractController
 
         $response = $client->sendRequest($messageFactory->createRequest('GET', 'https://yandex.ru'));
         $response->getBody()->getContents();
+
         return new Response('first page');
     }
 
-
     /**
      * @Route("/news/{slug}")
-     * @param String $slug
+     *
+     * @param string $slug
      *
      * @return Response
      */
     public function show(String $slug)
     {
         return $this->render('article/show.html.twig', [
-            'title' => ucwords(str_replace('-', ' ', $slug))
+            'title' => ucwords(str_replace('-', ' ', $slug)),
         ]);
     }
-
-
 }
