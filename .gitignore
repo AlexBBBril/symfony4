@@ -15,3 +15,4 @@
 .php_cs.dist
 .php_cs.cache
 ###< friendsofphp/php-cs-fixer ###
+tests/test.txt
