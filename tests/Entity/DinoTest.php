@@ -30,7 +30,26 @@ class DinoTest extends TestCase
     {
         $this->dino->setLength(15);
 
-        $this->assertGreaterThan(16, $this->dino->getLength(), 'Did your put it in the washing machine');
+        $this->assertGreaterThan(14, $this->dino->getLength(), 'Did your put it in the washing machine');
+    }
+    
+    public function testReturnsFullSpecOdDino()
+    {
+      $this->assertSame(
+          'The Unknown non-carnivorous dino is 0 meters long',
+          $this->dino->getSpec()
+      );
+    }
+
+    public function testRerturnsFullSpecForTyrannosaurus()
+    {
+      $dino = new Dino('Tyrannosaurus', true);
+      $dino->setLength(12);
+
+      $this->assertSame(
+          'The Tyrannosaurus carnivorous dino is 12 meters long',
+          $dino->getSpec()
+      );
     }
 
     protected function setUp(): void

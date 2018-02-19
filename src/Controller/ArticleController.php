@@ -25,7 +25,10 @@ class ArticleController extends AbstractController
      */
     public function homepage(HttpClient $client, MessageFactory $messageFactory)
     {
-        $break = true;
+                $break = true;
+
+        $r = 1;
+        $rrrr = 3434;
 
         $response = $client->sendRequest($messageFactory->createRequest('GET', 'https://yandex.ru'));
         $response->getBody()->getContents();

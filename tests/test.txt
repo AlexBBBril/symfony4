@@ -1,1 +1,1 @@
-sdasdasdasdfsdf
+php "D:\OpenServer.7.2\domains\symfony4rabbitmq\vendor\bin\php-cs-fixer" fix --verbose --config="D:\OpenServer.7.2\domains\symfony4rabbitmq\.php_cs.dist"
