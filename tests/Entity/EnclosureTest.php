@@ -54,8 +54,8 @@ class EnclosureTest extends TestCase
     {
         $enclosure = new Enclosure(true);
 
-        $enclosure->addDino(new Dino('Velociraptor', true));
-        $enclosure->addDino(new Dino());
+        // $enclosure->addDino(new Dino('Velociraptor', true));
+        // $enclosure->addDino(new Dino());
     }
 
     /**
