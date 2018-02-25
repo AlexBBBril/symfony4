@@ -16,3 +16,4 @@
 .php_cs.cache
 ###< friendsofphp/php-cs-fixer ###
 tests/test.txt
+/src/Consumer/.gitignore
