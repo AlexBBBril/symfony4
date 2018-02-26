@@ -13,7 +13,7 @@ old_sound_rabbit_mq:
             connection:       default
             exchange_options: { name: 'notification.v1.send_email', type: direct }
 
-    delayed_send_email:
+        delayed_send_email:
             connection: default
             exchange_options:
                 name: 'notification.v1.send_email_delayed_30000'
