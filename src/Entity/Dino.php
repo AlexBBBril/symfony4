@@ -41,7 +41,7 @@ class Dino
     private $isCarnivorous;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Enclosure", inveredBy="dinos")
+     * @ORM\OneToMany(targetEntity="App\Entity\Enclosure", mappedBy="dinos")
      */
     private $enclosure;
 
