@@ -3,11 +3,12 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  */
-class User
+class User implements UserInterface, \Serializable
 {
     /**
      * @ORM\Id
@@ -32,16 +33,71 @@ class User
     private $name;
 
     /**
-     * @ORM\ManyToMany()
+     * @ORM\ManyToMany(targetEntity="App\Entity\Role")
      */
     private $roles;
 
+    public function eraseCredentials()
+    {
+    }
+
+    /**
+     * @see \Serializable::serialize()
+     *
+     * @return string
+     */
+    public function serialize()
+    {
+        return serialize(array(
+            $this->id,
+            $this->name,
+            $this->password,
+        ));
+    }
+
+    /**
+     * @see \Serializable::unserialize()
+     *
+     * @param string $serialized
+     */
+    public function unserialize($serialized)
+    {
+        list (
+            $this->id,
+            $this->name,
+            $this->password,
+            // see section on salt below
+            // $this->salt
+            ) = unserialize($serialized);
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getSalt() {
+         return null;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUsername() {
+         return $this->name;
+    }
     /**
      * @return mixed
      */
     public function getId()
     {
         return $this->id;
+    }
+
+    public function getRoles()
+    {
+        if ($this->roles) {
+            return array_merge($this->roles, ['ROLE_USER']);
+        }
+        return ['ROLE_USER'];
     }
 
     /**
