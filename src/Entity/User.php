@@ -94,10 +94,19 @@ class User implements UserInterface, \Serializable
 
     public function getRoles()
     {
-        if ($this->roles) {
-            return array_merge($this->roles, ['ROLE_USER']);
+        echo json_encode($this->roles);die;
+
+        $roles = $this->roles;
+        // give everyone ROLE_USER!
+        if (!in_array('ROLE_USER', $roles)) {
+            $roles[] = 'ROLE_USER';
         }
-        return ['ROLE_USER'];
+        return $roles;
+    }
+
+    public function setRoles(array $roles)
+    {
+        $this->roles = $roles;
     }
 
     /**

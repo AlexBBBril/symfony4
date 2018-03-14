@@ -3,9 +3,14 @@
 namespace App\Controller;
 
 
+use App\Entity\Role;
+use App\Entity\User;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -13,6 +18,21 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class TestController extends Controller
 {
+    /**
+     * @var ObjectManager
+     */
+    private $om;
+
+    /**
+     * TestController constructor.
+     *
+     * @param ObjectManager $objectManager
+     */
+    public function __construct(ObjectManager $objectManager)
+    {
+        $this->om = $objectManager;
+    }
+
     /**
      * @Route("/get/{id}")
      * @Method("GET")
@@ -34,7 +54,13 @@ class TestController extends Controller
      */
     public function getAll()
     {
-        return new Response('getall');
+        $user = $this->om->getRepository(User::class)->find(1);
+        //$role = $user->getRoles();
+
+        //$users = $this->om->getRepository(Role::class)->getUsersInRoleArray(['ROLE_USER']);
+
+
+        return new JsonResponse(print_r(324234));
     }
 
     /**

@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="App\Repository\RoleRepository")
  */
 class Role
 {
@@ -25,6 +26,35 @@ class Role
      * @ORM\Column(type="string")
      */
     private $title;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="App\Entity\User")
+     */
+    private $users;
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getUsers(): ArrayCollection
+    {
+        return $this->users;
+    }
+
+    /**
+     * @param ArrayCollection $users
+     *
+     * @return Role
+     */
+    public function setUsers(ArrayCollection $users): Role
+    {
+        $this->users = $users;
+
+        return $this;
+    }
+
+
 
     /**
      * @return mixed
