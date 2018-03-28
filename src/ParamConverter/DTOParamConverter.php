@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\ParamConverter;
 
 use JMS\Serializer\Serializer;
-use Renlife\ApiTools\Exception\ValidationException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Validator\Exception\ValidatorException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *
  * @package App\ParamConverter
  */
-class DTOConverter implements ParamConverterInterface
+class DTOParamConverter implements ParamConverterInterface
 {
     /**
      * @var ValidatorInterface
@@ -42,10 +42,9 @@ class DTOConverter implements ParamConverterInterface
      * @param ParamConverter $configuration Содержит имя, класс, и настройки объекта
      *
      * @return void
-     *
+     * @throws ValidatorException
      * @throws \Symfony\Component\HttpKernel\Exception\BadRequestHttpException
      * @throws \LogicException
-     * @throws ValidationException
      */
     public function apply(Request $request, ParamConverter $configuration): void
     {
@@ -56,7 +55,8 @@ class DTOConverter implements ParamConverterInterface
         $object = $this->deserialize($configuration->getClass(), $request);
         $violations = $this->validator->validate($object);
         if ($violations->count()) {
-            throw new ValidationException($violations);
+//            throw new ValidationException($violations);
+            throw new ValidatorException($violations);
         }
 
         $request->attributes->set($configuration->getName(), $object);
