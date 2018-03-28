@@ -15,7 +15,7 @@ services:
     # this creates a service per class whose id is the fully-qualified class name
     App\:
         resource: '../src/*'
-        exclude: '../src/{Entity,Migrations,Tests}'
+        exclude: '../src/{Entity,Migrations,Tests, DTO}'
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
@@ -29,3 +29,10 @@ services:
     app.consumer.mail_sender:
         class: App\Consumer\MailSenderConsumer
         arguments: ['@old_sound_rabbit_mq.delayed_send_email_producer']
+        
+    App\ParamConverter\DTOConverter:
+        arguments:
+            - '@validator'
+            - '@jms_serializer'
+        tags:
+            - { name: request.param_converter, priority: -2, converter: request_param_converter }
