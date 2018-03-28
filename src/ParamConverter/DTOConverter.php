@@ -34,27 +34,25 @@ class DTOConverter implements ParamConverterInterface
     }
 
     /**
-     * Получает переданный JSON,
-     * десериализует в объект необходимого класса,
-     * валидирует полученный объект и 
-     * передает его в объект Request
+     * Получает переданный JSON, десериализует в объект необходимого класса,
+     * валидирует полученный объект и передает его в объект Request
      *
      * @param Request        $request
-     * @param ParamConverter $configuration Contains the name, class and options of the object
+     * @param ParamConverter $configuration Содержит имя, класс, и настройки объекта
      *
-     * @return void True if the object has been successfully set, else false
-     *              
+     * @return void
+     *
      * @throws \LogicException
      * @throws ValidationException
      */
-    public function apply(Request $request, ParamConverter $configuration)
+    public function apply(Request $request, ParamConverter $configuration): void
     {
         $object = $this->deserialize($configuration->getClass(), $request);
         $violations = $this->validator->validate($object);
         if ($violations->count()) {
             throw new ValidationException($violations);
         }
-        
+
         $request->attributes->set($configuration->getName(), $object);
     }
 
@@ -63,21 +61,23 @@ class DTOConverter implements ParamConverterInterface
      *
      * @param ParamConverter $configuration
      *
-     * @return void True if the object is supported, else false
+     * @return bool true если объект подходит, false если нет
      */
-    public function supports(ParamConverter $configuration)
+    public function supports(ParamConverter $configuration): bool
     {
-        // TODO: Implement supports() method.
+        $class = $configuration->getClass();
+
+        return !(!$class || !is_subclass_of($class, DTORequestInterface::class));
     }
 
     /**
      * Десериализация объекта из переданного JSON в объект переданного класса
-     * 
+     *
      * @param string  $class
      * @param Request $request
      *
      * @return DTORequestInterface
-     * 
+     *
      * @throws \LogicException
      */
     private function deserialize(string $class, Request $request): DTORequestInterface
