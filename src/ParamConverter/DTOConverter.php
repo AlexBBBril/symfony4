@@ -9,6 +9,7 @@ use Renlife\ApiTools\Exception\ValidationException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -42,11 +43,16 @@ class DTOConverter implements ParamConverterInterface
      *
      * @return void
      *
+     * @throws \Symfony\Component\HttpKernel\Exception\BadRequestHttpException
      * @throws \LogicException
      * @throws ValidationException
      */
     public function apply(Request $request, ParamConverter $configuration): void
     {
+        if (!$request->getContent()) {
+            throw new BadRequestHttpException('JSON данные не переданы');
+        }
+
         $object = $this->deserialize($configuration->getClass(), $request);
         $violations = $this->validator->validate($object);
         if ($violations->count()) {
@@ -78,10 +84,16 @@ class DTOConverter implements ParamConverterInterface
      *
      * @return DTORequestInterface
      *
+     * @throws \Symfony\Component\HttpKernel\Exception\BadRequestHttpException
      * @throws \LogicException
      */
     private function deserialize(string $class, Request $request): DTORequestInterface
     {
+        json_decode($request->getContent(), true);
+        if (JSON_ERROR_NONE !== json_last_error()) {
+            throw new BadRequestHttpException('Передан некорректный JSON-объект');
+        }
+
         return $this->serializer->deserialize($request->getContent(), $class, 'json');
     }
 }
