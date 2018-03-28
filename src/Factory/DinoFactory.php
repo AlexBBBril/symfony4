@@ -4,9 +4,20 @@ namespace App\Factory;
 
 
 use App\Entity\Dino;
+use App\Service\DinosaurLengthDeterminator;
 
 class DinoFactory
 {
+    /**
+     * @var DinosaurLengthDeterminator
+     */
+    private $lengthDeterminator;
+
+    public function __construct(DinosaurLengthDeterminator $lengthDeterminator)
+    {
+        $this->lengthDeterminator = $lengthDeterminator;
+    }
+
     /**
      * @param int $length
      *
@@ -15,6 +26,28 @@ class DinoFactory
     public function growVelociraptor(int $length) :Dino
     {
         return $this->createDino('Velociraptor', true, $length);
+    }
+
+    /**
+     * @param string $specification
+     *
+     * @return Dino
+     * @throws \Exception
+     */
+    public function growFromSpecification(string $specification): Dino
+    {
+        // defaults
+        $codeName = 'InG-' . random_int(1, 99999);
+        $length = $this->lengthDeterminator->getLengthFromSpecification($specification);
+        $isCarnivorous = false;
+
+        if (stripos($specification, 'carnivorous') !== false) {
+            $isCarnivorous = true;
+        }
+
+        $dinosaur = $this->createDinosaur($codeName, $isCarnivorous, $length);
+
+        return $dinosaur;
     }
 
     /**

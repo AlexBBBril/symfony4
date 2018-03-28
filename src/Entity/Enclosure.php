@@ -15,6 +15,13 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Enclosure
 {
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="integer")
+     */
+    private $id;
+
     /** @var Collection
      * @ORM\OneToMany(targetEntity="App\Entity\Dino", mappedBy="enclosure", cascade={"persist"})
      */
@@ -93,7 +100,10 @@ class Enclosure
             || $this->dinos->first()->isCarnivorous() === $dino->isCarnivorous();
     }
 
-    public function addSecurity(Security $security)
+    /**
+     * @param Security $security
+     */
+    public function addSecurity(Security $security): void
     {
         $this->securities[] = $security;
     }

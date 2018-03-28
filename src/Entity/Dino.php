@@ -18,9 +18,16 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Dino
 {
-    const LARGE = 10;
+    public const LARGE = 10;
 
-    const HUGE = 30;
+    public const HUGE = 30;
+
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="integer")
+     */
+    private $id;
 
     /**
      * @var int
@@ -41,7 +48,7 @@ class Dino
     private $isCarnivorous;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Enclosure", inveredBy="dinos")
+     * @ORM\OneToMany(targetEntity="App\Entity\Enclosure", mappedBy="dinos")
      */
     private $enclosure;
 

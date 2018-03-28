@@ -49,13 +49,15 @@ class EnclosureTest extends TestCase
 
     /**
      * @expectedException \App\Exception\NotABuffetException
+     * @throws DinoAreRunningRampantException
+     * @throws NotABuffetException
      */
     public function testItDoesNotAllowCarnivorousDinosToCarnivorousEnclosure()
     {
         $enclosure = new Enclosure(true);
 
-        // $enclosure->addDino(new Dino('Velociraptor', true));
-        // $enclosure->addDino(new Dino());
+        $enclosure->addDino(new Dino('Velociraptor', true));
+        $enclosure->addDino(new Dino());
     }
 
     /**

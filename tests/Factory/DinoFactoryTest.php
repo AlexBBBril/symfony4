@@ -5,6 +5,7 @@ namespace App\Tests\Factory;
 
 use App\Entity\Dino;
 use App\Factory\DinoFactory;
+use App\Service\DinosaurLengthDeterminator;
 use PHPUnit\Framework\TestCase;
 
 class DinoFactoryTest extends TestCase
@@ -97,7 +98,9 @@ class DinoFactoryTest extends TestCase
 
     public function setUp()
     {
-        $this->factory = new DinoFactory();
+        $mock = $this->createMock(DinosaurLengthDeterminator::class);
+
+        $this->factory = new DinoFactory($mock);
     }
 
 
