@@ -14,7 +14,7 @@ class Kernel extends BaseKernel
 {
     use MicroKernelTrait;
 
-    const CONFIG_EXTS = '.{php,xml,yaml,yml}';
+    const CONFIG_EXTS = '.{yaml}';
 
     public function getCacheDir()
     {
@@ -59,5 +59,19 @@ class Kernel extends BaseKernel
             $routes->import($confDir.'/routes/'.$this->environment.'/**/*'.self::CONFIG_EXTS, '/', 'glob');
         }
         $routes->import($confDir.'/routes'.self::CONFIG_EXTS, '/', 'glob');
+        $routes->import('', '/', 'action');
+    }
+    
+    /**
+     * The extension point similar to the Bundle::build() method.
+     *
+     * Use this method to register compiler passes and manipulate the container during the building process.
+     *
+     * @param ContainerBuilder $container
+     */
+    protected function build(ContainerBuilder $container)
+    {
+        $container
+            ->addCompilerPass(new ActionsRouteAnnotationsPass());
     }
 }
