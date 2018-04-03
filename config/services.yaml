@@ -16,6 +16,14 @@ services:
     App\:
         resource: '../src/*'
         exclude: '../src/{Entity,Migrations,Tests, DTO}'
+        
+    _instanceof:
+        App\Action\ActionInterface:
+            tags: ['controller.service_arguments', 'route.annotation']
+
+    # Кастомный роутер загрузчик, для работы функционала экшенов
+    App\Routing\ActionLoader:
+            tags: ['routing.loader']
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
