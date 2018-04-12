@@ -18,6 +18,9 @@ if (isset($_ENV['BOOTSTRAP_CLEAR_CACHE_ENV']) && 'test' === $_ENV['BOOTSTRAP_CLE
     passthru($command);
 }
 
+passthru(sprintf('php "%1$s/../vendor/bin/php-cs-fixer" fix --config=%1$s/../.php_cs.dist  ', __DIR__));
+passthru(sprintf('php "%s/../bin/console" cache:clear --env=test --no-interaction -vvv', __DIR__));
+// passthru(sprintf('php "%s/../bin/console" doctrine:schema:update --env=test -f --no-interaction -vvv', __DIR__));
 
 //passthru(sprintf('php "%1$s%2$svendor%2$sbin%2$sphp-cs-fixer" fix --verbose --config="%1$s%2$s.php_cs.dist"', dirname(__DIR__), DIRECTORY_SEPARATOR));
 //passthru(sprintf('vendor/bin/php-cs-fixer fix --config=./../.php_cs.dist --verbose', dirname(__DIR__)));
