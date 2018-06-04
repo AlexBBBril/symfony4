@@ -71,7 +71,15 @@ class Kernel extends BaseKernel
      */
     protected function build(ContainerBuilder $container)
     {
-        $container
-            ->addCompilerPass(new ActionsRouteAnnotationsPass());
+        foreach (glob($this->getRootDir().'/DependencyInjection/*.php') as $file) {
+            $class = 'App\DependencyInjection\\'.basename($file, '.php');
+
+            if (class_exists($class)) {
+                $obj = new $class;
+                if ($obj instanceof CompilerPassInterface) {
+                    $container->addCompilerPass($obj);
+                }
+            }
+        }
     }
 }
