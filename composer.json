@@ -59,7 +59,9 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
-        ]
+        ],
+        "cover": "php vendor/codeception/codeception/codecept run --coverage-html=codecoverage",
+        "tests": "php vendor/codeception/codeception/codecept run"
     },
     "conflict": {
         "symfony/symfony": "*"
